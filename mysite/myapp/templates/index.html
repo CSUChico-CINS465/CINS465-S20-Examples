@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Template Demo</h1>
+{{ body }}
+{% autoescape off %}
+{{ body }}
+{% endautoescape %}
+{% if temp_list %}
+<ul>
+{% for temp in temp_list %}
+<li>{{ temp.last_name }}, {{ temp.first_name }}
+    <br>
+    <img src="{{ temp.cat }}" height=100/>
+</li>
+
+{% endfor %}
+{% endif %}
+</ul>
+{% endblock %}
