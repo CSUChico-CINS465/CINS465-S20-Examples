@@ -4,8 +4,16 @@
 {% if suggestion_list %}
 <ul>
 {% for s in suggestion_list %}
-<li class="button">{{ s.suggestion }} </li>
+<li>{{ s.suggestion }} </li>
 {% endfor %}
 {% endif %}
 </ul>
+<form action="/" method="post">
+    {% csrf_token %}
+    {{ form.suggestion.label }}
+    {{ form.suggestion }}
+    {{ form.suggestion.errors }}
+
+    <input type="submit" class="button" value="Add Suggestion" />
+</form>
 {% endblock %}
