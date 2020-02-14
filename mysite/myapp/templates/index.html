@@ -4,7 +4,13 @@
 {% if suggestion_list %}
 <ul>
 {% for s in suggestion_list %}
-<li>{{ s.suggestion }} </li>
+<li>{{ s.suggestion }} - {{ s.author }}
+    <ul>
+        {% for c in s.comments %}
+        <li>{{ c.comment }} - {{ c.author }}</li>
+        {% endfor %}
+    </ul>
+</li>
 {% endfor %}
 {% endif %}
 </ul>

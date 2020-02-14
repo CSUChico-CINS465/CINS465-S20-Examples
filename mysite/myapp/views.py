@@ -4,15 +4,23 @@ from . import models
 from . import forms
 
 # Create your views here.
-def index(request, page=0):
+def index(request):
     if request.method == "POST":
         form = forms.SuggestionForm(request.POST)
         if form.is_valid():
-            form.save()
+            form.save(request)
             form = forms.SuggestionForm()
     else:
         form = forms.SuggestionForm()
-    suggestion_list = models.Suggestion_Model.objects.all()
+    suggestion_objects = models.Suggestion_Model.objects.all()
+    suggestion_list=[]
+    for sugg in suggestion_objects:
+        comment_objects = models.CommentModel.objects.filter(suggestion=sugg)
+        temp_sugg = {}
+        temp_sugg["suggestion"]=sugg.suggestion
+        temp_sugg["author"]=sugg.author.username
+        temp_sugg["comments"]=comment_objects
+        suggestion_list+=[temp_sugg]
 
     context = {
         "title":"Tempate Demo",
