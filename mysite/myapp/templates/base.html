@@ -5,12 +5,36 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
+    <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static "css/foundation.css" %}">
     <link rel="stylesheet" href="{% static "css/app.css" %}">
   </head>
   <body>
-   
+    <div class="top-bar">
+        <div class="top-bar-left">
+          <ul class="dropdown menu" data-dropdown-menu>
+            <li class="menu-text">Suggestion Site</li>
+            <li>
+                {% if user.is_authenticated %}
+                    <a href="/logout/">Logout</a>
+                {% else %}
+                    <a href="/login/">Login</a>
+                {% endif %}
+            </li>
+          </ul>
+        </div>
+        <div class="top-bar-right">
+          <ul class="menu">
+              <li>
+            {% if user.is_authenticated %}
+                Welcome {{ user.username }}
+            {% else %}
+                Welcome Guest
+            {% endif %}
+            </li>
+          </ul>
+        </div>
+      </div>
     {% block content %}
     {% endblock %}
     <script src="{% static "js/vendor/jquery.js" %}"></script>
