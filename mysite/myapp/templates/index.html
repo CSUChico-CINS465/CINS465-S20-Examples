@@ -1,19 +1,39 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
-{% if suggestion_list %}
-<ul>
-{% for s in suggestion_list %}
-<li>{{ s.suggestion }} - {{ s.author }}
+<div id="app-4">
+    <span v-if="unseen">
     <ul>
-        {% for c in s.comments %}
-        <li>{{ c.comment }} - {{ c.author }}</li>
-        {% endfor %}
+        <li v-for="sugg in suggestions">
+            {% verbatim %}
+                {{ sugg.suggestion }} - {{ sugg.author}}
+                <ul>
+                    <li v-for="comm in sugg.comments">
+                        {{ comm.comment }} - {{ comm.author }}
+                    </li>
+                </ul>
+            {% endverbatim %}
+        </li>
     </ul>
-</li>
-{% endfor %}
-{% endif %}
-</ul>
+    </span>
+    <span v-if="seen">
+    {% if suggestion_list %}
+    <ul>
+    {% for s in suggestion_list %}
+    <li>{{ s.suggestion }} - {{ s.author }}
+        <ul>
+            {% for c in s.comments %}
+            <li>{{ c.comment }} - {{ c.author }}</li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% endfor %}
+    {% endif %}
+    </ul>
+</span>
+</div>
+
 {% if user.is_authenticated %}
 <form action="/" method="post">
     {% csrf_token %}
@@ -24,4 +44,10 @@
     <input type="submit" class="button" value="Add Suggestion" />
 </form>
 {% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="{% static "js/app.js" %}"></script>
 {% endblock %}
