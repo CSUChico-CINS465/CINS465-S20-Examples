@@ -7,7 +7,7 @@ class Suggestion_Model(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.suggestion 
+        return self.author.username + " " + self.suggestion 
 
 class CommentModel(models.Model):
     comment = models.CharField(max_length=240)
