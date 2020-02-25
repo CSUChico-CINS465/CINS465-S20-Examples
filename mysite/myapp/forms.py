@@ -1,5 +1,4 @@
 from django import forms
-from django.core.validators import validate_slug
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -14,7 +13,7 @@ def must_be_caps(value):
 
 def must_be_unique(value):
     user = User.objects.filter(email=value)
-    if len(user)>0:
+    if len(user) > 0:
         raise forms.ValidationError("Email Already Exists")
     # Always return the cleaned data, whether you have changed it or
     # not.
@@ -29,15 +28,15 @@ def must_be_bob(value):
 
 class SuggestionForm(forms.Form):
     suggestion = forms.CharField(
-        label='Suggestion', 
-        required=True, 
+        label='Suggestion',
+        required=True,
         max_length=240
     )
 
-    def save(self,request):
-        suggestion_instance = models.Suggestion_Model()
+    def save(self, request):
+        suggestion_instance = models.SuggestionModel()
         suggestion_instance.suggestion = self.cleaned_data["suggestion"]
-        suggestion_instance.author=request.user
+        suggestion_instance.author = request.user
         suggestion_instance.save()
         return suggestion_instance
 

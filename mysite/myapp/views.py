@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.http import JsonResponse
@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from . import models
 from . import forms
 
-import json
+
 
 
 def logout_view(request):
@@ -25,15 +25,15 @@ def index(request):
             form = forms.SuggestionForm()
     else:
         form = forms.SuggestionForm()
-    suggestion_objects = models.Suggestion_Model.objects.all()
-    suggestion_list=[]
+    suggestion_objects = models.SuggestionModel.objects.all()
+    suggestion_list = []
     for sugg in suggestion_objects:
         comment_objects = models.CommentModel.objects.filter(suggestion=sugg)
         temp_sugg = {}
-        temp_sugg["suggestion"]=sugg.suggestion
-        temp_sugg["author"]=sugg.author.username
-        temp_sugg["comments"]=comment_objects
-        suggestion_list+=[temp_sugg]
+        temp_sugg["suggestion"] = sugg.suggestion
+        temp_sugg["author"] = sugg.author.username
+        temp_sugg["comments"] = comment_objects
+        suggestion_list += [temp_sugg]
 
     context = {
         "title":"Tempate Demo",
@@ -44,23 +44,23 @@ def index(request):
     return render(request, "index.html", context=context)
 
 def get_suggestions(request):
-    suggestion_objects = models.Suggestion_Model.objects.all()
-    suggestion_list={}
-    suggestion_list["suggestions"]=[]
+    suggestion_objects = models.SuggestionModel.objects.all()
+    suggestion_list = {}
+    suggestion_list["suggestions"] = []
     for sugg in suggestion_objects:
         comment_objects = models.CommentModel.objects.filter(suggestion=sugg)
         temp_sugg = {}
-        temp_sugg["suggestion"]=sugg.suggestion
-        temp_sugg["author"]=sugg.author.username
-        temp_sugg["id"]=sugg.id
-        temp_sugg["comments"]=[]
+        temp_sugg["suggestion"] = sugg.suggestion
+        temp_sugg["author"] = sugg.author.username
+        temp_sugg["id"] = sugg.id
+        temp_sugg["comments"] = []
         for comm in comment_objects:
-            temp_comm={}
-            temp_comm["comment"]=comm.comment
-            temp_comm["id"]=comm.id
-            temp_comm["author"]=comm.author.username
-            temp_sugg["comments"]+=[temp_comm]
-        suggestion_list["suggestions"]+=[temp_sugg]
+            temp_comm = {}
+            temp_comm["comment"] = comm.comment
+            temp_comm["id"] = comm.id
+            temp_comm["author"] = comm.author.username
+            temp_sugg["comments"] += [temp_comm]
+        suggestion_list["suggestions"] += [temp_sugg]
     return JsonResponse(suggestion_list)
 
 @login_required
@@ -72,15 +72,15 @@ def page(request):
             form = forms.SuggestionForm()
     else:
         form = forms.SuggestionForm()
-    suggestion_objects = models.Suggestion_Model.objects.all()
-    suggestion_list=[]
+    suggestion_objects = models.SuggestionModel.objects.all()
+    suggestion_list = []
     for sugg in suggestion_objects:
         comment_objects = models.CommentModel.objects.filter(suggestion=sugg)
         temp_sugg = {}
-        temp_sugg["suggestion"]=sugg.suggestion
-        temp_sugg["author"]=sugg.author.username
-        temp_sugg["comments"]=comment_objects
-        suggestion_list+=[temp_sugg]
+        temp_sugg["suggestion"] = sugg.suggestion
+        temp_sugg["author"] = sugg.author.username
+        temp_sugg["comments"] = comment_objects
+        suggestion_list += [temp_sugg]
 
     context = {
         "title":"Tempate Demo",
