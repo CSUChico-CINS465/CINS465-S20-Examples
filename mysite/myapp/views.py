@@ -6,12 +6,34 @@ from django.http import JsonResponse
 from . import models
 from . import forms
 
+from datetime import datetime, timezone
 
 
 
 def logout_view(request):
     logout(request)
     return redirect("/")
+
+def comment(request, sugg_id):
+    if not request.user.is_authenticated:
+        return redirect("/")
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            form = forms.CommentForm(request.POST)
+            if form.is_valid():
+                form.save(request, sugg_id)
+                return redirect("/")
+        else:
+            form = forms.CommentForm()
+    else:
+        form = forms.CommentForm()
+    context = {
+        "title":"Comment",
+        "sugg_id":sugg_id,
+        "form":form
+    }
+    return render(request,"comment.html", context=context)
+
 
 # Create your views here.
 def index(request):
@@ -53,12 +75,15 @@ def get_suggestions(request):
         temp_sugg["suggestion"] = sugg.suggestion
         temp_sugg["author"] = sugg.author.username
         temp_sugg["id"] = sugg.id
+        temp_sugg["date"] = sugg.published_on.strftime("%Y-%m-%d %H:%M:%S")
         temp_sugg["comments"] = []
         for comm in comment_objects:
             temp_comm = {}
             temp_comm["comment"] = comm.comment
             temp_comm["id"] = comm.id
             temp_comm["author"] = comm.author.username
+            temp_comm["date"] = datetime.now(timezone.utc) - comm.published_on
+            # temp_comm["date"] = comm.published_on.strftime("%Y-%m-%d %H:%M:%S")
             temp_sugg["comments"] += [temp_comm]
         suggestion_list["suggestions"] += [temp_sugg]
     return JsonResponse(suggestion_list)

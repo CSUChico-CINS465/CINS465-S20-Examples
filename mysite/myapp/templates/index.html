@@ -2,38 +2,42 @@
 {% load static %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
-<div id="app-4">
-    <span v-if="unseen">
-    <ul>
-        <li v-for="sugg in suggestions">
-            {% verbatim %}
-                {{ sugg.suggestion }} - {{ sugg.author}}
-                <ul>
-                    <li v-for="comm in sugg.comments">
-                        {{ comm.comment }} - {{ comm.author }}
-                    </li>
-                </ul>
-            {% endverbatim %}
-        </li>
-    </ul>
-    </span>
-    <span v-if="seen">
-    {% if suggestion_list %}
-    <ul>
-    {% for s in suggestion_list %}
-    <li>{{ s.suggestion }} - {{ s.author }}
-        <ul>
-            {% for c in s.comments %}
-            <li>{{ c.comment }} - {{ c.author }}</li>
-            {% endfor %}
+<div class="grid-x grid-padding-x">
+    <div class="large-10 medium-10 small-12 large-offset-1 medium-offset-1 cell">
+    <div id="app-4">
+        <span v-if="unseen">
+            
+            <div class="card-info primary" v-for="sugg in suggestions">
+                <div class="card-info-content">
+                    {% verbatim %}
+                    <h3 class="lead">{{ sugg.suggestion }}</h3>
+                    authored by {{ sugg.author}}
+                    published on {{ sugg.date }}
+                    <div class="grid-x">
+                        <div class="large-11 medium-11 small-12 large-offset-1 medium-offset-1 cell">
+                        
+                            <div class="card-info primary" v-for="comm in sugg.comments">
+                                <div class="card-info-content">
+                                    {{ comm.comment }} - {{ comm.author }} - {{ comm.date }}
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a :href="'/comment/'+sugg.id+'/'" class="button">comment</a>
+                    {% endverbatim %}
+                </div>
+            </div>
+        </div>
+        </span>
+        <span v-if="seen">
+        <p>Suggestions loading</p>
         </ul>
-    </li>
-    {% endfor %}
-    {% endif %}
-    </ul>
-</span>
+    </span>
+    </div>
 </div>
-
+    
+  
+  
 {% if user.is_authenticated %}
 <form action="/" method="post">
     {% csrf_token %}
