@@ -27,4 +27,5 @@ urlpatterns = [
     path('register/', views.register),
     path('logout/', views.logout_view),
     path('suggestions/', views.get_suggestions),
+    path('comment/<int:sugg_id>/', views.comment),
 ]
