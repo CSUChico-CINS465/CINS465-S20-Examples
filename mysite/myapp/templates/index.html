@@ -6,10 +6,10 @@
     <div class="large-10 medium-10 small-12 large-offset-1 medium-offset-1 cell">
     <div id="app-4">
         <span v-if="unseen">
-            
             <div class="card-info primary" v-for="sugg in suggestions">
                 <div class="card-info-content">
                     {% verbatim %}
+                    <img :src="sugg.image" :alt="sugg.image_desc"/>
                     <h3 class="lead">{{ sugg.suggestion }}</h3>
                     authored by {{ sugg.author}}
                     published on {{ sugg.date }}
@@ -38,16 +38,7 @@
     
   
   
-{% if user.is_authenticated %}
-<form action="/" method="post">
-    {% csrf_token %}
-    {{ form.suggestion.label }}
-    {{ form.suggestion }}
-    {{ form.suggestion.errors }}
 
-    <input type="submit" class="button" value="Add Suggestion" />
-</form>
-{% endif %}
 {% endblock %}
 
 {% block scripts %}
