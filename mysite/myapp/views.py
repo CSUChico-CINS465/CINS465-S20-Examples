@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -6,7 +7,7 @@ from django.http import JsonResponse
 from . import models
 from . import forms
 
-from datetime import datetime, timezone
+
 
 
 
@@ -32,7 +33,7 @@ def comment(request, sugg_id):
         "sugg_id":sugg_id,
         "form":form
     }
-    return render(request,"comment.html", context=context)
+    return render(request, "comment.html", context=context)
 
 def make_suggestion(request):
     if request.method == "POST":
@@ -45,7 +46,6 @@ def make_suggestion(request):
             form = forms.SuggestionForm()
     else:
         form = forms.SuggestionForm()
-    
     context = {
         "title":"Add Suggestion",
         "form":form
@@ -54,7 +54,6 @@ def make_suggestion(request):
 
 # Create your views here.
 def index(request):
-    
     suggestion_objects = models.SuggestionModel.objects.all()
     suggestion_list = []
     for sugg in suggestion_objects:
@@ -73,11 +72,17 @@ def index(request):
     return render(request, "index.html", context=context)
 
 def get_suggestions(request):
-    suggestion_objects = models.SuggestionModel.objects.all().order_by('-published_on')
+    suggestion_objects = models.SuggestionModel.objects.all().order_by(
+        '-published_on'
+    )
     suggestion_list = {}
     suggestion_list["suggestions"] = []
     for sugg in suggestion_objects:
-        comment_objects = models.CommentModel.objects.filter(suggestion=sugg).order_by('-published_on')
+        comment_objects = models.CommentModel.objects.filter(
+            suggestion=sugg
+        ).order_by(
+            '-published_on'
+        )
         temp_sugg = {}
         temp_sugg["suggestion"] = sugg.suggestion
         temp_sugg["author"] = sugg.author.username
@@ -86,8 +91,8 @@ def get_suggestions(request):
             temp_sugg["image"] = sugg.image.url
             temp_sugg["image_desc"] = sugg.image_description
         except:
-             temp_sugg["image"] = ""
-             temp_sugg["image_desc"] = ""
+            temp_sugg["image"] = ""
+            temp_sugg["image_desc"] = ""
         temp_sugg["date"] = sugg.published_on.strftime("%Y-%m-%d %H:%M:%S")
         temp_sugg["comments"] = []
         for comm in comment_objects:

@@ -38,7 +38,7 @@ class SuggestionForm(forms.Form):
         required=False
     )
     image_description = forms.CharField(
-        label='Image Description', 
+        label='Image Description',
         max_length=240,
         required=False
     )
@@ -56,7 +56,7 @@ class CommentForm(forms.Form):
     comment = forms.CharField(
         label='Comment',
         required=True,
-        max_length=240    
+        max_length=240
     )
 
     def save(self, request, sugg_id):
