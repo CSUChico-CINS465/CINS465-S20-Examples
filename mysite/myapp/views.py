@@ -1,8 +1,11 @@
+# pylint: disable=W0703
 from datetime import datetime, timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.http import JsonResponse
+
+
 
 from . import models
 from . import forms
@@ -71,6 +74,8 @@ def index(request):
     }
     return render(request, "index.html", context=context)
 
+
+
 def get_suggestions(request):
     suggestion_objects = models.SuggestionModel.objects.all().order_by(
         '-published_on'
@@ -88,17 +93,15 @@ def get_suggestions(request):
         temp_sugg["author"] = sugg.author.username
         temp_sugg["id"] = sugg.id
         try:
-            if not sugg.image.url is None:
-                temp_sugg["image"] = sugg.image.url
-            else:
-                temp_sugg["image"] = ""
-            if not sugg.image_description is None:
-                temp_sugg["image_desc"] = sugg.image_description
-            else:
-                temp_sugg["image_desc"] = ""
-        except LookupError:
+            temp_sugg["image"] = sugg.image.url
+            temp_sugg["image_desc"] = sugg.image_description
+        except Exception as err:
+            print(err)
             temp_sugg["image"] = ""
             temp_sugg["image_desc"] = ""
+        # except BaseException:
+        #     temp_sugg["image"] = ""
+        #     temp_sugg["image_desc"] = ""
         # except Exception as err:
         #     print(err)
         #     temp_sugg["image"] = ""
