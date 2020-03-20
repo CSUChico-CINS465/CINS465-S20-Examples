@@ -88,11 +88,21 @@ def get_suggestions(request):
         temp_sugg["author"] = sugg.author.username
         temp_sugg["id"] = sugg.id
         try:
-            temp_sugg["image"] = sugg.image.url
-            temp_sugg["image_desc"] = sugg.image_description
-        except:
+            if not sugg.image.url is None:
+                temp_sugg["image"] = sugg.image.url
+            else:
+                temp_sugg["image"] = ""
+            if not sugg.image_description is None:
+                temp_sugg["image_desc"] = sugg.image_description
+            else:
+                temp_sugg["image_desc"] = ""
+        except LookupError:
             temp_sugg["image"] = ""
             temp_sugg["image_desc"] = ""
+        # except Exception as err:
+        #     print(err)
+        #     temp_sugg["image"] = ""
+        #     temp_sugg["image_desc"] = ""
         temp_sugg["date"] = sugg.published_on.strftime("%Y-%m-%d %H:%M:%S")
         temp_sugg["comments"] = []
         for comm in comment_objects:
