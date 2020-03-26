@@ -8,6 +8,8 @@ services:
        - .:/code
     expose:
        - 8000
+    environment:
+       - GOOGLE_APPLICATION_CREDENTIALS=/code/mysite/CINS465-Primary-27dfc70f57bb.json
     links:
        - redis:redis 
     # user: "1000:1000"

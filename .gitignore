@@ -245,3 +245,7 @@ mysite/media/
 
 #Ignore Certs
 nginx/ssl/
+
+#google storage
+
+mysite/CINS465-Primary-27dfc70f57bb.json
