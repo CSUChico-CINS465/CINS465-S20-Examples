@@ -138,3 +138,4 @@ DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 GS_BUCKET_NAME = 'cins465'
 
 STATIC_ROOT = "static/"
+STATIC_URL = "https://storage.googleapis.com/cins465/static/"
